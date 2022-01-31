@@ -26,6 +26,7 @@ namespace TPMoyennes
             sixiemeA.ajouterMatiere("Physique/Chimie");
             sixiemeA.ajouterMatiere("Histoire");
             Random random = new Random();
+
             // Ajout de 5 notes à chaque élève et dans chaque matière
             for (int ieleve = 0; ieleve < sixiemeA.eleves.Count; ieleve++)
             {
@@ -55,7 +56,7 @@ namespace TPMoyennes
         }
     }
 }
-// Classes fournies par HNI Institut
+//Classes fournies par HNI Institut
 class Note
 {
     public int matiere { get; private set; }
@@ -65,6 +66,77 @@ class Note
         matiere = m;
         note = n;
     }
+ }
+
+class Classe
+{
+    public string nomClasse { get; private set; }
+    public List<Eleve> eleves { get; private set; }
+    public List<string> matieres { get; private set; }
+    public Classe(string n)
+    {
+        nomClasse = n;
+    }
+
+    public Classe(List<Eleve> e, List<string> m)
+    {
+        eleves = e;
+        matieres = m;
+    }
+public double Moyenne(int ind)
+    {
+        double m = 0;
+        for (int i = 0; i < eleves.Count; i++)
+        {
+            m += eleves[i].Moyenne(ind);
+        }
+        return Math.Round(m / eleves.Count,2); 
+    }
+    public double Moyenne()
+    {
+        double m = 0;
+        for (int i = 0; i < eleves.Count; i++)
+        {
+            m += eleves[i].Moyenne();
+        }
+        return Math.Round( m / eleves.Count,2);
+    }
+    public void ajouterEleve(string n, string p)
+    {
+        eleves.Add(new Eleve(n,p));
+    }
+    public void ajouterMatiere(string n)
+    {
+        matieres.Add(n);
+    }
 }
 
+class Eleve
+{
+    public string nom { get; private set; }
+    public string prenom { get; private set; }
+    public List<Note> notes { get; private set; }
+    public Eleve(string n, string p)
+    {
+        nom = n;
+        prenom = p;
+    }
+    public double Moyenne(int m)
+    {
+        return Math.Round(notes.Find(n => n.matiere == m).note,2);
+    }
+    public double Moyenne()
+    {
+        double m = 0;
+        for (int i = 0; i < notes.Count; i++)
+        {
+            m += notes[i].note;
+        }
+        return Math.Round(m / notes.Count,2);
+    }
+    public void ajouterNote(Note n)
+    {
+        notes.Add(n);
+    }
+}
 
